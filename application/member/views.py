@@ -2,11 +2,20 @@ from django.shortcuts import render
 from .models import Member , Reward ,RewardHistory
 from rest_framework.views import APIView
 from .serializer import CreateMemberSerializer
-from .serializer import CreateRewardSerializer
+from .serializer import CreateRewardSerializer,CreateRewardHistorySerializer
 from rest_framework.response import Response
 
 
 class MemberView(APIView):
+    ## query
+    def get(self,request):
+        member = Member.objects.all()
+        serializer_class = CreateMemberSerializer
+        if not member:
+            return Response({"status_code":400, "message":"member not found"})
+        else:
+            return Response({"data": CreateMemberSerializer(member, many=True).data})
+
     ## create
     def post(self,request):
         serializer = CreateMemberSerializer(data=request.data)
@@ -84,6 +93,14 @@ class CollectPoint(APIView):
 
 
 class RewardView(APIView):
+    ## query
+    def get(self, request):
+        reward = Reward.objects.all()
+        serializer_class = CreateRewardSerializer
+        if not reward:
+            return Response({"status_code":400, "message":"reward not found"})
+        else:
+            return Response({"data": CreateRewardSerializer(reward, many=True).data})
 
     ## create
     def post(self, request):
@@ -126,6 +143,17 @@ class RewardView(APIView):
     
 
 class RewardHistoryView(APIView):
+    ## query
+    def get(self, request):
+        reward_history = RewardHistory.objects.all()
+        serializer_class = CreateRewardHistorySerializer
+        if not reward_history:
+            return Response({"status_code":400, "message":"reward not found"})
+        else:
+            return Response({"data": CreateRewardHistorySerializer(reward_history, many=True).data})
+
+
+
     def post(self,request):
         ## orm django
         member = Member.objects.filter(id=request.data["member_id"]).first()

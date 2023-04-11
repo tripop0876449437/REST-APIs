@@ -20,12 +20,15 @@ from member.views import MemberView , RewardView , CollectPoint , RewardHistoryV
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('member/request', MemberView.as_view()),
     path('member/add', MemberView.as_view()),
     path('member/<int:member_id>/delete', MemberView.as_view()),
     path('member/<int:member_id>/update', MemberView.as_view()),
     path('member/<int:member_id>/add/point', CollectPoint.as_view()),
+    path('reward/request', RewardView.as_view()),
     path('reward/add', RewardView.as_view()),
     path('reward/redeem', RewardHistoryView.as_view()),
     path('reward/<int:reward_id>/delete', RewardView.as_view()),
     path('reward/<int:reward_id>/update', RewardView.as_view()),
+    path('reward_history/request', RewardHistoryView.as_view()),
 ]
